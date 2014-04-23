@@ -122,12 +122,23 @@ class Month
     if days_difference < 0
       days_difference *= -1
     end
-    # Using 28 as a base because that is the least number of days in any month.
-    number_of_days = 28 + days_difference
 
-    # Correct erroneous number of days. Perhaps not ideal...
-    if number_of_days > 31
-      number_of_days = 31
+    # Using 28 as a base because that is the least number of days in any month.
+    shortest_month = 28
+    number_of_days = shortest_month + days_difference
+
+    # Correct erroneous number of days. Covers all possible cases somehow... Perhaps not ideal...
+    longest_month = 31
+    if number_of_days > longest_month
+      if starting_day == 5 && next_month_start == 0
+        number_of_days = 30
+      elsif starting_day == 6 && next_month_start == 1
+        number_of_days = 30
+      elsif starting_day == 6 && next_month_start == 0
+        number_of_days = 29
+      else
+        number_of_days = 31
+      end
     end
 
     return number_of_days
