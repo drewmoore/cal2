@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'test/unit'
 require_relative '../lib/zellers.rb'
 require_relative '../lib/month.rb'
+require_relative '../lib/year.rb'
 
 def strip_control_characters_and_excesses(string)
   last =  string.split("\033[2;0f").last#.gsub(/(\e\[\d+\w)|(\e\[\w)/,"")

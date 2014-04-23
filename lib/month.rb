@@ -4,15 +4,27 @@ class Month
   def initialize(month, year)
     @month = month.to_i
     @year = year.to_i
-    @width = 22
-    @height = 8
     @number_of_cells = 42
+    @@width = 22
+    @@height = 8
+  end
+
+  def self.width
+    @@width
+  end
+
+  def self.height
+    @@height
   end
 
   def get_lines(*args)
     lines_array = []
     # Get array with two strings: a centered month + year (or just month), and the abbreviated days
-    header = make_header(:month)
+    if args.size < 1
+      header = make_header(:month)
+    else
+      header = make_header(:year)
+    end
 
     # Calculate number of days in the month
     number_of_days = get_number_of_days
@@ -48,8 +60,8 @@ class Month
     end
 
     # Calculate measurements for centering header
-    indent_left = ((@width - date_string.size) / 2) - 1
-    indent_right = @width - date_string.size - indent_left
+    indent_left = ((@@width - date_string.size) / 2) - 1
+    indent_right = @@width - date_string.size - indent_left
     indentation_left = " " * indent_left
     indentation_right = " " * indent_right
 
@@ -112,6 +124,13 @@ class Month
     end
     # Using 28 as a base because that is the least number of days in any month.
     number_of_days = 28 + days_difference
+
+    # Correct erroneous number of days. Perhaps not ideal...
+    if number_of_days > 31
+      number_of_days = 31
+    end
+
+    return number_of_days
   end
 
   def get_days(number_of_days)
@@ -160,7 +179,7 @@ class Month
 
     # Determine number of rows that need to be filled. Height minus the two headers. Just in case
     # this needs to be calculated dynamically later on.
-    rows = @height - 2
+    rows = @@height - 2
 
     # Fill weeks array with empty 'rows' to be appended
     rows.times do |i|
